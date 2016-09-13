@@ -155,6 +155,7 @@ public class RequestController {
         retmap.put("results", list);
         return retmap;
     }
+
     /**
      * 统计某个实体被收藏的数量
      *
