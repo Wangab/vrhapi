@@ -2,8 +2,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017/apidb
-#      username: wangab
-#      password: wab123
+      username: wangab
+      password: wab123
 server:
   context-path: /apiservice
   display-name: APIServerApplacation

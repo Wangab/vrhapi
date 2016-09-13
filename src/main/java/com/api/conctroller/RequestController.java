@@ -81,17 +81,19 @@ public class RequestController {
 
     /**
      * 查询点赞列表
-     * @param uuid
-     * @param type
-     * @param limit
+     * @param uuid 点赞者用户ID
+     * @param type 点赞类型，user\goods\shop
      * @return
      */
     @RequestMapping(value = "/mylikes/{type}/{uuid}", method = RequestMethod.GET)
     @ApiOperation(value = "查询点赞列表", notes = "输出为JSON格式", produces = "application/json")
-    public @ResponseBody Map<String, Object> getLikesByUUID(@PathVariable("uuid") String uuid, @PathVariable("type") String type,@RequestParam int page, @RequestParam int limit) {
+    public @ResponseBody Map<String, Object> getLikesByUUID(@PathVariable("uuid") String uuid, @PathVariable("type") String type,@RequestParam int page) {
         Query query = new Query(Criteria.where("userid").is(uuid).and("type").is(type));
+        if (page < 1) {
+            page = 1;
+        }
         query.skip((page-1) * 50);
-        query.limit(limit);
+        query.limit(50);
         List<Likes> list = mongoOperations.find(query, Likes.class);
         Map<String, Object> retmap = new HashMap<>();
         retmap.put("uuid", uuid);
@@ -136,15 +138,17 @@ public class RequestController {
      * 查询收藏列表
      * @param uuid
      * @param type
-     * @param limit
      * @return
      */
     @RequestMapping(value = "/myFollowers/{type}/{uuid}", method = RequestMethod.GET)
     @ApiOperation(value = "统计自身收藏的列表", notes = "输出为JSON格式", produces = "application/json")
-    public @ResponseBody Map<String, Object> getFollowsByUUID(@PathVariable("uuid") String uuid, @PathVariable("type") String type,@RequestParam int page, @RequestParam int limit) {
+    public @ResponseBody Map<String, Object> getFollowsByUUID(@PathVariable("uuid") String uuid, @PathVariable("type") String type,@RequestParam int page) {
         Query query = new Query(Criteria.where("userid").is(uuid).and("type").is(type));
+        if (page < 1) {
+            page = 1;
+        }
         query.skip((page-1) * 50);
-        query.limit(limit);
+        query.limit(50);
         List<Follows> list = mongoOperations.find(query, Follows.class);
         Map<String, Object> retmap = new HashMap<>();
         retmap.put("uuid", uuid);
